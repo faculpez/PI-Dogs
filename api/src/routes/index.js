@@ -45,29 +45,25 @@ const getDbInfo = async () =>{
     })
 }
 
-const getAllDogs = async () => {
+const getDogs = async () => {
     const dbDog = await getDbInfo();
     const apiDog = await getApiInfo();
-    const allDog = apiDog.concat(dbDog);
+    const allDog = await apiDog.concat(dbDog);
     return allDog;
 }
 
 
-router.get('/', async (req,res) => {
-    let aaa = await getAllDogs()
-    console.log(aaa);
-    res.send(aaa)
-})
-
 
 router.get('/dogs', async (req,res) => {
     const name = req.query.name
-    const response = await getAllDogs();
+    let response = await getDogs();
     if(name){
-        let dogName = await response.filter( el => el.name.toLowerCase().includes(name.toLowerCase()))
-        dogName.length ?
-        res.status(200).json(dogName) :
+        try {
+            let dogName = await response.filter( el => el.name.toLowerCase().includes(name.toLowerCase()))
+        res.status(200).json(dogName) 
+    } catch (error) {
         res.status(404).send('Perro no encontrado');
+        }
     }else{
         res.status(200).send(response);
     }
@@ -91,12 +87,12 @@ router.get('/temperaments', async (req,res) => {
     const temps = await apiInfo.map((i) => i.temperament);
     const tempEach = temps.reduce((prev, curr, index) =>{
         if(index === 1 ){
-            prev = prev.split(",");
+            prev = prev.split(', '); 
         }
         if(!curr){
             return prev
         }
-        const currToArray = curr.split(',');
+        const currToArray = curr.split(', ');
         
         currToArray.forEach((item) => {
             if(!prev.includes(item)){
@@ -104,14 +100,25 @@ router.get('/temperaments', async (req,res) => {
         }});
         return prev;
     })
-        tempEach.forEach( (e) => {
-            Temperament.findOrCreate({
-            where : { name: e }
+    tempEach.forEach( (e) => {
+        Temperament.findOrCreate({
+        where : { name: e }
         })
     });
     const allTemps = await Temperament.findAll();
     res.status(200).send(allTemps);
 });
+
+router.get('/dogs/:id', async (req,res) => {
+    const id = req.params.id;
+    const dogsTotal = await getDogs();
+    if(id){
+        let dogId = await dogsTotal.filter(item => item.id === id)
+        dogId.length?
+        res.status(200).send(dogId) :
+        res.status(404).send('Perro no encontrado')
+    }
+})
 
 
 module.exports = router;

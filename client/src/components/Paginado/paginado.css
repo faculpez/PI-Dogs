@@ -1,0 +1,11 @@
+.paginado {
+    display: inline-block;
+}
+.paginado a {
+    color: black;
+    float: left;
+    padding: 8px 16px;
+}
+a:hover{
+    background-color: #ffffff; /* Green */
+}
