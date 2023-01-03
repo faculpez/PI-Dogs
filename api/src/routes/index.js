@@ -31,7 +31,6 @@ router.post('/dogs', async (req,res) => {
         const { name, image, weight, height, life_span, temperament } = req.body;
         await Dog.create({name, image, weight, height, life_span, temperament});
         res.status(201).send('Creado con exito.');
-        console.log();
     } catch (error) {
         res.status(400).send({ error: error.message })
     }
