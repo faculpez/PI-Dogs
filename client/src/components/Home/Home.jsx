@@ -5,6 +5,7 @@ import { filterByValue, getAllDogs, getTemperaments, orderByName, } from "../../
 import DogCard from '../DogCard/DogCard.jsx';
 import Nav from "../Nav/Nav";
 import Paginado from '../Paginado/Paginado.jsx'
+import { Select } from "@mui/material";
 import './home.css'
 
 
@@ -45,22 +46,19 @@ export default function Home () {
             <h1>DOGS</h1>
             <h3>...</h3>
             <div className="select">
-            <select onChange={e => handleSort(e)}>
+            <strong> Ordenar:</strong>
+            <Select  onChange={e => handleSort(e)}>
                 <option value="asc">A-z</option>
                 <option value="desc">Z-a</option>
-            </select>
-
-            <select onChange={e => handleFilterTemps(e)}>
+            </Select>
+            <strong>  Filtrar por:</strong>
+            <Select  onChange={e => handleFilterTemps(e)}>
                 <option value="All">All</option>
                 {temperaments?.map(item =>(<option value ={item.name} key ={item.id} >{item.name}</option>))} 
-            </select>
+            </Select>
         </div>
 
             
-            <Paginado
-            dogsPerPage ={dogsPerPage}
-            allDogs = {allDogs.length}
-            paginado = {paginado}/>
                 
             
             
@@ -75,6 +73,8 @@ export default function Home () {
                     )
                 })}
                 </div>
+
+                <Paginado dogsPerPage ={dogsPerPage} allDogs = {allDogs.length} paginado = {paginado}/>
         </div>
     )
 };

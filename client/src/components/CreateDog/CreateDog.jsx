@@ -6,6 +6,7 @@ import { useState } from 'react';
 import { useEffect } from 'react';
 import { createDog, getTemperaments } from '../../redux/actions';
 import { useHistory } from 'react-router-dom';
+import { Button, Select } from '@mui/material';
 
 export default function CreateDog(){
     const [input,setInput] = useState({
@@ -87,11 +88,11 @@ export default function CreateDog(){
         </div>
         
         <label >Temperaments: </label>
-        <select >
+        <Select>
             {temperaments && temperaments.map(item =>(<option value ={item.name} key ={item.id} >{item.name}</option>))} 
-        </select>
+        </Select>
 
-        <button type='submit'>Create</button>
+        <Button variant='contained' color='success' type='submit'>Create</Button>
     </form>
     </div>
 );

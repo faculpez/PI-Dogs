@@ -3,12 +3,30 @@ import axios from 'axios';
 
 export function getAllDogs(){
     return async function(dispatch){
-        let json = await axios.get('http://localhost:3001/dogs'); 
-        return dispatch({
-            type: 'GET_ALL_DOGS',
-            payload: json.data
-        })
+        try {
+            let json = await axios.get('http://localhost:3001/dogs'); 
+            return dispatch({
+                type: 'GET_ALL_DOGS',
+                payload: json.data
+            })
+        } catch (error) {
+            console.log(error);
+            return error
+        }
     }};
+
+// export function getAllDogs(){
+//     return function(dispatch){
+//         return axios.get('http://localhost:3001/dogs')
+//         .then((data)=>{dispatch({
+//             type:'GET_ALL_DOGS',
+//             payload:data
+//         })})
+//         .catch((error)=>{
+//             return error
+//         })
+//     }
+// }
 
 export function getDetail(id){
     return async function(dispatch){
@@ -60,11 +78,16 @@ export function filterByValue (payload){
 
 export function createDog (payload){
     return async function (dispatch){
-        let response = await axios.post(`http://localhost3001/dogs`, payload);
-        console.log(response);
-        return dispatch ({
-            type:'CREATE_DOG',
-            payload
-        });
+        try {
+            let response = await axios.post(`http://localhost:3001/dogs`, payload);
+            console.log(response);
+            return dispatch ({
+                type:'CREATE_DOG',
+                payload
+            });
+            
+        } catch (error) {
+            console.log('ERROR',error.response);
+        }
     }
 }
