@@ -5,7 +5,7 @@ import { filterByValue, getAllDogs, getTemperaments, orderByName, } from "../../
 import DogCard from '../DogCard/DogCard.jsx';
 import Nav from "../Nav/Nav";
 import Paginado from '../Paginado/Paginado.jsx'
-import { Select } from "@mui/material";
+import { MenuItem, Select } from "@mui/material";
 import './home.css'
 
 
@@ -29,9 +29,9 @@ export default function Home () {
     }
     
     function handleFilterTemps(e){
-        dispatch(filterByValue(e.target.value))
+            dispatch(filterByValue(e.target.value))
     }
-
+    
     useEffect(() => {
         dispatch(getTemperaments());
     },[dispatch]);
@@ -39,7 +39,8 @@ export default function Home () {
     useEffect(() => {
         dispatch(getAllDogs());
     },[dispatch]);
-
+    
+    console.log(allDogs);
     return(
         <div>
             <Nav/>
@@ -47,14 +48,14 @@ export default function Home () {
             <h3>...</h3>
             <div className="select">
             <strong> Ordenar:</strong>
-            <Select  onChange={e => handleSort(e)}>
-                <option value="asc">A-z</option>
-                <option value="desc">Z-a</option>
+            <Select  variant='standard' onChange={e => handleSort(e)}>
+                <MenuItem value="asc">A-z</MenuItem>
+                <MenuItem value="desc">Z-a</MenuItem>
             </Select>
             <strong>  Filtrar por:</strong>
-            <Select  onChange={e => handleFilterTemps(e)}>
-                <option value="All">All</option>
-                {temperaments?.map(item =>(<option value ={item.name} key ={item.id} >{item.name}</option>))} 
+            <Select variant='standard' onChange={e => handleFilterTemps(e)}>
+                <MenuItem value="All">All</MenuItem>
+                {temperaments?.map(item =>(<MenuItem value={item.name} key={item.id} >{item.name}</MenuItem>))} 
             </Select>
         </div>
 
